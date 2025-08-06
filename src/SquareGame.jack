@@ -22,7 +22,7 @@ class SquareGame {
 
     /** Constructs a new Square Game. */
     constructor SquareGame new() {
-        let square = Square.new(260, 0, 30);
+        let square = Square.new(220, 0, 10, 40);
         let direction = 0;
 
         return this;
@@ -48,27 +48,6 @@ class SquareGame {
         while (~exit) {
             let movementCtr = 0;
             let isBottom = false;
-            // waits for a key to be pressed.
-            while (key = 0) {
-                let key = Keyboard.keyPressed();
-                do moveSquare();
-            }
-
-            if (key = 81) {
-                let exit = true;
-            }
-            if (key = 131) {
-                let direction = 1;
-            }
-            if (key = 133) {
-                let direction = 2;
-            }
-            if (key = 130) {
-                let direction = 3;
-            }
-            if (key = 132) {
-                let direction = 4;
-            }
 
             // waits for the key to be released.
             while (isBottom = false) {
@@ -80,16 +59,19 @@ class SquareGame {
                 if (key = 132) {
                     let direction = 4;
                 }
+                if (key = 32) {
+                    do square.flipOrientation();
+                }
                 while (movementCtr < 10) {
                     let key = Keyboard.keyPressed();
                     if (key = 130) {
-                        let direction = 3;
+                        do square.moveLeft();
                     }
                     if (key = 132) {
-                        let direction = 4;
+                        do square.moveRight();
                     }
-                    if (~(key = 0)) {
-                        do moveSquare();
+                    if (key = 32) {
+                        do square.flipOrientation();
                     }
                     let movementCtr = movementCtr + 1;
                 }
