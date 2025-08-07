@@ -1,0 +1,71 @@
+/**
+ * Tetris.jack
+ * 
+ * The space bar can be used to change the orientation of the shape
+ * The right and left arrows can be used to move the shape horizontally
+ */
+class TetrisGame {
+    field Piece piece;
+    field int shape;
+
+    constructor TetrisGame new(int shape) {
+        let shape = shape;
+        // Return different shapes for shape integer
+        if (shape = 1) {
+            let piece = Piece.new(250, 0, 10, 40);
+        }
+        if (shape = 2) {
+            let piece = Piece.new(245, 0, 20, 20);
+        }
+        return this;
+    }
+
+    method void run() {
+        var int movementCtr;
+        var boolean isBottom;
+        var char userkey;
+
+        let movementCtr = 0;
+        let isBottom = false;
+
+        while (isBottom = false) {
+            let movementCtr = 0;
+            let userkey = Keyboard.keyPressed();
+
+            // 1. User controlled movmenet:
+
+            // 1a. Flip piece 90 degrees when space bar pressed
+            if (userkey = 32) {
+                do piece.flipOrientation();
+            }
+            while (movementCtr < 4) {
+                let userkey = Keyboard.keyPressed();
+
+                // 1b. Move piece left when left arrow pressed
+                if (userkey = 130) {
+                    do piece.moveLeft();
+                }
+
+                 // 1b. Move piece right when right arrow pressed
+                if (userkey = 132) {
+                    do piece.moveRight();
+                }
+                if (userkey = 32) {
+                    do piece.flipOrientation();
+                }
+                let movementCtr = movementCtr + 1;
+            }
+
+            // 2. Automatic movement:
+
+            // 2a. Check if current piece is at bottom of screen OR directly above another
+            let isBottom = piece.isBottomOfScreen();
+
+            // 2b. Move down and restart loop if isBottom is false
+            do piece.moveDown();
+            do Sys.wait(2);
+        }
+        return;
+	}
+}
+

@@ -1,0 +1,117 @@
+/**
+ * Piece.jack
+ * 
+ * Piece is defined as a rectangle that can move horizontally
+ * with user input and stops on top of a black square
+ */
+class Piece {
+    field int x, y, temporaryWidth, width, height;
+
+    constructor Piece new(int posX, int posY, int pieceWidth, int pieceHeight) {
+        // Setting temporaryWidth to store value for flipOrientation
+        let temporaryWidth = pieceWidth;
+
+        // Setting dimensions and position
+        let width = pieceWidth;
+        let height = pieceHeight;
+        let x = posX;
+        let y = posY;
+    
+        // Draw pixels black
+        do draw(true);
+        return this;
+    }
+
+    method void draw(boolean isBlack) {
+        do Screen.setColor(isBlack);
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        return;
+    }
+
+    method void moveDown() {
+        if ((y + height) < 255) {
+            do draw(false);
+            let y = y + 1;
+            do draw(true);
+        }
+        return;
+    }
+
+    method void moveLeft() {
+        if (isBottomOfScreen()) {
+            // NO-OP
+        } else {
+            if (isPixelLeft()) {
+                // NO-OP
+            } else {
+                do draw(false);
+                let x = x - width;
+                do draw(true);
+                do Sys.wait(1);
+            }
+        }
+        return;
+    }
+
+    method void moveRight() {
+        if (isBottomOfScreen()) {
+            // NO-OP
+        } else {
+            if (isPixelRight()) {
+                // NO-OP
+            } else {
+                do draw(false);
+                let x = x + width;
+                do draw(true);
+                do Sys.wait(1);
+            }
+        }
+        return;
+    }
+
+    method boolean isBottomOfScreen() {
+        // Place shape on bottom of screen
+        if ((y + height) < 254) {
+            // Place shape on top of existing shape on screen
+            if (Memory.peek(16384 + (32*(y+height+2)) + ((x+(width/2))/16)) = 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    method boolean isPixelLeft() {
+        if (Memory.peek(16384 + (32*(y+height+2)) + (x-2/16)) = 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    method boolean isPixelRight() {
+        if (Memory.peek(16384 + (32*(y+height+2)) + ((x+width)/16)) = 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    method void flipOrientation() {
+        do draw(false);
+        let width = height;
+        let height = temporaryWidth;
+        let temporaryWidth = width;
+        do draw(true);
+        return;
+    }
+
+    // https://davej.io/2018/05/jack-screen-pixels.html
+    method int modSixteen(int div) {
+        var int quotient;
+        let quotient = div / 16;
+        return div - (quotient * 16);
+    }
+}

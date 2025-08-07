@@ -1,21 +1,53 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/09/Square/Main.jack
-
-/**
- * The Main class initializes a new Square Dance game and starts it.
+/** 
+ * Main.jack
+ * 
+ * This is the main file which starts the program's execution.
+ * It creates a new instance of TetrisGame, draws a border, 
+ * and starts the game's class execution with alternating shapes
  */
 class Main {
-
-    /** Initializes a new game and starts it. */    
+    /**
+    * Starting program execution here
+    */
     function void main() {
-        var SquareGame game;
-        while (1 = 1) {
-            let game = SquareGame.new();
+        // Create instance of new game
+        var TetrisGame game;
+
+        // Variables for gameplay
+        var int counter;
+
+        // Create border to hold tetris blocks
+        do drawBorder();
+        let counter = 1;
+
+        while (counter < 3) {
+            let game = TetrisGame.new(counter);
             do game.run();
+
+            // Alternate shapes that are dispensed
+            if (counter = 2) {
+                let counter = 1;
+            } else {
+                let counter = 2;
+            }
         }
-	    do game.dispose();
+        return;
+    }
+
+    /**
+    * drawBorder: Draws a border around the game space
+    */
+    method void drawBorder() {
+        do Screen.drawLine(155, 0, 155, 254);
+        do Screen.drawLine(154, 0, 154, 254);
+        do Screen.drawLine(153, 0, 153, 254);
+        do Screen.drawLine(152, 0, 152, 254);
+        do Screen.drawLine(151, 0, 151, 254);
+        do Screen.drawLine(355, 0, 355, 254);
+        do Screen.drawLine(356, 0, 356, 254);
+        do Screen.drawLine(357, 0, 357, 254);
+        do Screen.drawLine(358, 0, 358, 254);
+        do Screen.drawLine(359, 0, 359, 254);
         return;
     }
 }
